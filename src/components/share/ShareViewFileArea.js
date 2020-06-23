@@ -7,7 +7,7 @@ import {getSearchValue} from "../../util";
 import {replace} from "../../util/module/history";
 import {Grid, Segment} from "semantic-ui-react";
 import FileItem from "../home/FileItem";
-import {listPathShare, listShare, loadOrFetchFiles, loadOrFetchPath, sortFiles, visualizeFiles} from "../../actions";
+import {listPathShare, listShare, visualizeFiles} from "../../actions";
 
 export default class ShareViewFileArea extends React.Component {
 
@@ -55,7 +55,7 @@ export default class ShareViewFileArea extends React.Component {
 
     componentDidMount() {
         let {folder} = this.state
-        if (folder === '0') folder =  undefined
+        if (folder === '0') folder = undefined
 
         let {sid, password} = this.props
         listShare(sid, password, folder).then(res => {
@@ -78,7 +78,7 @@ export default class ShareViewFileArea extends React.Component {
         let {sid, password} = this.props
 
         if (prevState.folder !== folder) {
-            if (folder === '0') folder =  undefined
+            if (folder === '0') folder = undefined
 
             listShare(sid, password, folder).then(res => {
                 if (res.data.success) {
