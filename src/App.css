@@ -1,38 +1,93 @@
-.App {
-  text-align: center;
+/*
+ * Common
+ */
+.line-clamp-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.line-clamp-4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.div-hover:hover {
+    background: rgba(126, 166, 168, 0.75);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.file-list-row:hover {
+    background: rgba(126, 166, 168, 0.33);
 }
 
-.App-link {
-  color: #61dafb;
+.file-list-row-chosen {
+    background: rgb(200, 229, 201);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.file-list-name {
+    color: black;
+}
+
+.file-list-name:hover {
+    color: dodgerblue;
+}
+
+.file-preview-text {
+    /*-webkit-transform: scale(0.5);*/
+    /*transform:scale(0.8);*/
+    font-size: 0.5rem !important;
+    line-height: 1rem !important;
+    /*font-weight: 100;*/
+    /*border: 1px solid #397EFF;*/
+    background-color: rgba(242, 190, 67, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.break-word {
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+.break-all {
+    word-break: break-all;
+    line-height: 1.5;
+}
+
+/*
+$("code").each(function(){
+    $(this).html("<ol><li>" + $(this).html().replace(/\n/g,"\n</li><li>") +"\n</li></ol>");
+});
+document.querySelectorAll("code").forEach(code => {
+    code.innerHTML = "<ol><li>" + code.innerHTML.replace(/\n/g, "\n</li><li>") + "\n</li></ol>";
+})
+ */
+/*.hljs {*/
+/*    border: 0;*/
+/*    font-size: 12px;*/
+/*    display: block;*/
+/*    padding: 1px;*/
+/*    margin: 0;*/
+/*    width: 100%;*/
+/*    font-weight: 200;*/
+/*    color: #333;*/
+/*    white-space: pre-wrap*/
+/*}*/
+
+.hljs ol {
+    list-style: decimal;
+    margin: 0 0 0 40px !important;
+    padding: 0;
+}
+
+.hljs ol li {
+    list-style: decimal-leading-zero;
+    border-left: 1px solid #ddd !important;
+    padding: 5px !important;
+    margin: 0 !important;
+    white-space: pre;
 }

@@ -1,0 +1,8 @@
+.share-view-card {
+    background: rgba(166, 167, 168, 0.5);
+    border: 1px solid #397EFF;
+}
+
+.share-view-card:hover {
+    background: rgba(166, 167, 168, 0.1);
+}
