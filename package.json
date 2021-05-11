@@ -19,7 +19,7 @@
     "highlight.js": "^10.0.3",
     "history": "^4.10.1",
     "idb": "^5.0.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "markdown-it": "^11.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
