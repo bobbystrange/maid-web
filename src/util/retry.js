@@ -1,4 +1,4 @@
-export function retry(fn, retries, timeout, callback) {
+export default function retry(fn, retries, timeout, callback) {
     if (retries < 1) {
         callback(false);
         return;

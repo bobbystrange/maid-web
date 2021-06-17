@@ -20,9 +20,9 @@ const routes = [
 
 ];
 */
-import {Route} from "react-router-dom";
-import React from "react";
-import {Redirect} from "react-router";
+import { Route } from 'react-router-dom';
+import React from 'react';
+import { Redirect } from 'react-router';
 
 const renderRoute = (item, currentPath, children) => {
     let path = `${currentPath}/${item.path}`;
@@ -30,7 +30,7 @@ const renderRoute = (item, currentPath, children) => {
     path = path.replace(/\/+/g, '/');
 
     if (item.component) {
-        children.push({path: path, component: item.component});
+        children.push({ path, component: item.component });
         // children.push(
         //     <Route
         //         key={path}
@@ -41,53 +41,45 @@ const renderRoute = (item, currentPath, children) => {
         // );
     }
     if (item.childRoutes) {
-        item.childRoutes.forEach(r => renderRoute(r, path, children));
+        item.childRoutes.forEach((r) => renderRoute(r, path, children));
     }
     if (item.redirect) {
-        const redirect = item.redirect;
+        const { redirect } = item;
         if (typeof redirect === 'string') {
-            children.push({from: redirect, to: path})
+            children.push({ from: redirect, to: path });
             // children.push(<Redirect exact from={redirect} to={path} key={path + '-' + redirect}/>)
         } else {
-            redirect.forEach(it => {
-                children.push({from: it, to: path})
+            redirect.forEach((it) => {
+                children.push({ from: it, to: path });
                 // children.push(<Redirect exact from={it} to={path} key={path + '-' + it}/>)
-            })
+            });
         }
     }
 };
 
 export const renderRoutes = (routes, currentPath) => {
-    let children = []
-    routes.forEach(item => renderRoute(item, currentPath, children));
+    const children = [];
+    routes.forEach((item) => renderRoute(item, currentPath, children));
     return children;
 };
 
 export const renderReactRoutes = (routes, currentPath) => {
-    let children = renderRoutes(routes, currentPath);
-    let reactRoutes = [];
-    children.forEach((item, index) => {
-        let {path, from, to} = item;
+    const children = renderRoutes(routes, currentPath);
+    const reactRoutes = [];
+    children.forEach((item) => {
+        const { path, from, to } = item;
         if (path) {
             reactRoutes.push(
                 <Route
-                    key={index}
-                    render={props => <item.component {...props}/>}
+                    key={path}
+                    render={(props) => <item.component {...props} />}
                     exact
                     path={path}
                 />
-            )
+            );
         } else if (from && to) {
-            reactRoutes.push(
-                <Redirect
-                    key={index}
-                    exact
-                    from={from}
-                    to={to}
-                />)
+            reactRoutes.push(<Redirect key={path} exact from={from} to={to} />);
         }
     });
     return reactRoutes;
 };
-
-

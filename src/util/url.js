@@ -1,6 +1,44 @@
+export function queryStringToObject(query, alsoStatement = false) {
+    let queryString = query;
+    if (!queryString) {
+        if (alsoStatement) {
+            return {
+                query: {},
+                statement: '',
+            };
+        }
+        return {};
+    }
+
+    const queryObject = {};
+    let statement = '';
+    const len = queryString.length;
+    const i = queryString.indexOf('#');
+    if (i !== -1) {
+        if (alsoStatement && i !== len - 1) {
+            statement = queryString.slice(i + 1);
+        }
+        queryString = queryString.slice(0, i);
+    }
+    queryString.split('&').forEach((value) => {
+        const k = value.indexOf('=');
+        if (k !== -1 && k !== value.length - 1) {
+            queryObject[value.slice(0, k)] = value.slice(k + 1);
+        }
+    });
+
+    if (alsoStatement) {
+        return {
+            query: queryObject,
+            statement,
+        };
+    }
+    return queryObject;
+}
+
 // based on window.location.search
 export function getSearchValue(key, defaultValue) {
-    let search = window.location.search;
+    let { search } = window.location;
     if (search) {
         search = search.slice(1);
         const query = queryStringToObject(search);
@@ -9,57 +47,21 @@ export function getSearchValue(key, defaultValue) {
                 let value = Number(query[key]);
                 if (Number.isNaN(value)) value = defaultValue;
                 return value;
-            } else {
-                return query[key];
             }
+            return query[key];
         }
     }
     return defaultValue;
 }
 
-export function queryStringToObject(queryString, alsoStatement = false) {
-    if (!queryString) {
-        if (alsoStatement) {
-            return {
-                query: {},
-                statement: "",
-            }
-        } else return {};
-    }
-
-    let query = {};
-    let statement = "";
-    let len = queryString.length;
-    let i = queryString.indexOf('#');
-    if (i !== -1) {
-        if (alsoStatement && i !== len - 1) {
-            statement = queryString.slice(i + 1);
-        }
-        queryString = queryString.slice(0, i);
-    }
-    queryString.split('&').forEach((value, index) => {
-        let i = value.indexOf('=');
-        if (i !== -1 && i !== value.length - 1) {
-            query[value.slice(0, i)] = value.slice(i + 1);
-        }
-    });
-
-    if (alsoStatement) {
-        return {
-            query: query,
-            statement: statement,
-        }
-    } else return query;
-}
-
 export function getOrigin() {
-    return window.location.protocol + "//" + window.location.host;
+    return `${window.location.protocol}//${window.location.host}`;
 }
 
 export function openLink(url, target = undefined) {
-    let link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
-    link.style = "visibility:hidden";
+    link.style = 'visibility:hidden';
     if (target) link.target = target;
     document.body.appendChild(link);
     link.click();
@@ -67,5 +69,5 @@ export function openLink(url, target = undefined) {
 }
 
 export function openBlankLink(url) {
-    openLink(url, '_blank')
+    openLink(url, '_blank');
 }

@@ -1,66 +1,101 @@
-import {fromBackslash} from './text'
+import { fromBackslash } from './text';
 
-const nf = v => `${v < 10 ? "0" + v : v}`;
-const nf2 = v => `${v < 10 ? "00" + v : (v < 100 ? "0" + v : v)}`;
-const monthF = v => ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][v - 1];
-const monthF2 = v => ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"][v - 1];
-const quarterF = v => ["Spring", "Summer", "Autumn", "Winter"][v - 1];
-const dayF = v => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][v];
-const dayF2 = v => ["Monday", "Tuesday", "Wednesday", "Thursday",
-    "Friday", "Saturday", "Sunday"][v];
+const nf = (v) => `${v < 10 ? `0${v}` : v}`;
+const nf2 = (v) => `${v < 10 ? `00${v}` : v < 100 ? `0${v}` : v}`;
+const monthF = (v) =>
+    [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+    ][v - 1];
+const monthF2 = (v) =>
+    [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ][v - 1];
+const quarterF = (v) => ['Spring', 'Summer', 'Autumn', 'Winter'][v - 1];
+const dayF = (v) => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][v];
+const dayF2 = (v) =>
+    [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+    ][v];
 
 /**
- *
+ * format a js date
  * @param date, Date object/unix millisecond
- * @param fmt
+ * @param format format string
  * @returns {string}
  */
-export function dateFormat(date, fmt) {
-    fmt = fromBackslash(fmt);
-    if (!fmt) return "";
+export function dateFormat(date, format) {
+    let fmt = fromBackslash(format);
+    if (!fmt) return '';
 
-    if (typeof date === 'number') {
-        date = new Date(date);
-    } else if (typeof date === 'string') {
-        date = new Date(date);
+    let d = date;
+    if (typeof d === 'number') {
+        d = new Date(d);
+    } else if (typeof d === 'string') {
+        d = new Date(d);
     }
 
     const o = [
-        ["yyyy", date.getFullYear()],
-        ["yy", date.getFullYear() % 100],
-        ["y", date.getFullYear() % 100],
-        ["MMMM", date.getMonth() + 1, monthF2],
-        ["MMM", date.getMonth() + 1, monthF],
-        ["MM", date.getMonth() + 1, nf],
-        ["M", date.getMonth() + 1],
-        ["dd", date.getDate(), nf],
-        ["d", date.getDate()],
-        ["hh", date.getHours(), nf],
-        ["h", date.getHours()],
-        ["mm", date.getMinutes(), nf],
-        ["m", date.getMinutes()],
-        ["ss", date.getSeconds(), nf],
-        ["s", date.getSeconds()],
-        ["SSS", date.getMilliseconds(), nf2],
-        ["SS", date.getMilliseconds()],
-        ["S", date.getMilliseconds()],
-        ["Q", Math.floor((date.getMonth() + 3) / 3), quarterF],
-        ["q", Math.floor((date.getMonth() + 3) / 3)],
-        ["w", date.getDay()],
-        ["W", date.getDay(), dayF],
-        ["WW", date.getDay(), dayF2],
+        ['yyyy', d.getFullYear()],
+        ['yy', d.getFullYear() % 100],
+        ['y', d.getFullYear() % 100],
+        ['MMMM', d.getMonth() + 1, monthF2],
+        ['MMM', d.getMonth() + 1, monthF],
+        ['MM', d.getMonth() + 1, nf],
+        ['M', d.getMonth() + 1],
+        ['dd', d.getDate(), nf],
+        ['d', d.getDate()],
+        ['hh', d.getHours(), nf],
+        ['h', d.getHours()],
+        ['mm', d.getMinutes(), nf],
+        ['m', d.getMinutes()],
+        ['ss', d.getSeconds(), nf],
+        ['s', d.getSeconds()],
+        ['SSS', d.getMilliseconds(), nf2],
+        ['SS', d.getMilliseconds()],
+        ['S', d.getMilliseconds()],
+        ['Q', Math.floor((d.getMonth() + 3) / 3), quarterF],
+        ['q', Math.floor((d.getMonth() + 3) / 3)],
+        ['w', d.getDay()],
+        ['W', d.getDay(), dayF],
+        ['WW', d.getDay(), dayF2],
     ];
 
-    for (let i in o) {
-        let k = o[i][0];
-        let v = o[i][1];
-        let f = o[i][2];
+    const { length } = o;
+    for (let i = 0; i < length; i++) {
+        const obj = o[i];
+        const k = obj[0];
+        let v = obj[1];
+        const f = obj[2];
         if (f) v = f(v);
-        while (
-            new RegExp("(" + k + ")").test(fmt)
-            ) {
+        while (new RegExp(`(${k})`).test(fmt)) {
             fmt = fmt.replace(RegExp.$1, `${v}`);
         }
     }
@@ -68,55 +103,55 @@ export function dateFormat(date, fmt) {
 }
 
 export function yyMMdd(date) {
-    return dateFormat(date, "yy.MM.dd");
+    return dateFormat(date, 'yy.MM.dd');
 }
 
 export function yyyyMMdd(date) {
-    return dateFormat(date, "yyyy-MM-dd");
+    return dateFormat(date, 'yyyy-MM-dd');
 }
 
 export function yyyyMMddhhmm(date) {
-    return dateFormat(date, "yyyy-MM-dd hh:mm");
+    return dateFormat(date, 'yyyy-MM-dd hh:mm');
 }
 
-//// //// ////    //// //// ////    //// //// ////    //// //// ////    //// //// ////
+/// / //// ////    //// //// ////    //// //// ////    //// //// ////    //// //// ////
 
 export function getRelativeTime(timestamp) {
-    let timeValue = (timestamp - new Date().getTime()) / 1000
-    let sign = 1
+    let timeValue = (timestamp - new Date().getTime()) / 1000;
+    let sign = 1;
     if (timeValue < 0) {
-        timeValue = -timeValue
-        sign = -1
+        timeValue = -timeValue;
+        sign = -1;
     }
 
-    let timeUnit
+    let timeUnit;
     if (timeValue < 120) {
-        timeUnit = 'second'
+        timeUnit = 'second';
     } else {
-        timeValue = timeValue / 60
+        timeValue /= 60;
         if (timeValue < 120) {
-            timeUnit = 'minute'
+            timeUnit = 'minute';
         } else {
-            timeValue = timeValue / 60
+            timeValue /= 60;
             if (timeValue < 48) {
-                timeUnit = 'hour'
+                timeUnit = 'hour';
             } else {
-                timeValue = timeValue / 24
+                timeValue /= 24;
                 if (timeValue < 60) {
-                    timeUnit = 'day'
+                    timeUnit = 'day';
                 } else {
-                    timeValue = timeValue / 30
+                    timeValue /= 30;
                     if (timeValue < 24) {
-                        timeUnit = 'month'
+                        timeUnit = 'month';
                     } else {
-                        timeValue = timeValue / 12
-                        timeUnit = 'year'
+                        timeValue /= 12;
+                        timeUnit = 'year';
                     }
                 }
             }
         }
     }
 
-    timeValue = sign * Math.ceil(timeValue)
-    return {timeValue, timeUnit}
+    timeValue = sign * Math.ceil(timeValue);
+    return { timeValue, timeUnit };
 }

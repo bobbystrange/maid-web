@@ -1,16 +1,16 @@
 // translate (\y\M\d \h\m\s \S \ \\) to (yMd hms S  \)
 export function fromBackslash(str, backslash = '\\') {
-    if (!str) return "";
-    let newStr = [];
-    let len = str.length;
+    if (!str) return '';
+    const newStr = [];
+    const len = str.length;
     for (let i = 0; i < len; i++) {
-        if (str[i] === '\\') {
+        if (str[i] === backslash) {
             if (i === len - 1) {
-                console.warn('Found unmatched backslash in the end of your string');
                 newStr.push(str[i]);
                 break;
             } else {
-                newStr.push(str[++i]);
+                i += 1;
+                newStr.push(str[i]);
                 continue;
             }
         }
@@ -20,24 +20,27 @@ export function fromBackslash(str, backslash = '\\') {
 }
 
 export function anyMatch(str, ...patterns) {
-    for (let i in patterns) {
-        let pattern = patterns[i];
+    const { length } = patterns;
+    for (let i = 0; i < length; i++) {
+        const pattern = patterns[i];
         if (RegExp(pattern).test(str)) return true;
     }
     return false;
 }
 
 export function allMatch(str, ...patterns) {
-    for (let i in patterns) {
-        let pattern = patterns[i];
+    const { length } = patterns;
+    for (let i = 0; i < length; i++) {
+        const pattern = patterns[i];
         if (!RegExp(pattern).test(str)) return false;
     }
     return true;
 }
 
 export function anyExt(filename, ...exts) {
-    for (let i in exts) {
-        let ext = exts[i];
+    const { length } = exts;
+    for (let i = 0; i < length; i++) {
+        const ext = exts[i];
         if (RegExp(`.*\\.${ext}`).test(filename)) return true;
     }
     return false;
